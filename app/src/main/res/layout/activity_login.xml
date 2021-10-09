@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,46 +7,118 @@
     android:background="@drawable/background"
     tools:context=".Login">
 
-
     <ImageView
         android:id="@+id/login_logo"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_height="290dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtLogin"
         app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/txtLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_logo"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@color/white"
-        android:textSize="32dp" />
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/edtUsername" />
 
     <EditText
         android:id="@+id/edtUsername"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtLogin"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="40dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/white_background_edit_text"
         android:ems="10"
         android:gravity="center"
+        android:hint="@string/username"
         android:inputType="textPersonName"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/edtPassword" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edtUsername"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/white_background_edit_text"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPassword" />
-</RelativeLayout>
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnLogin" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtOr"/>
+
+    <TextView
+        android:id="@+id/txtOr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="@string/or"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnFacebook"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/btnFacebook"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtRegister"
+        app:srcCompat="@drawable/facebook" />
+
+    <ImageButton
+        android:id="@+id/btnGoogle"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/google"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtRegister"/>
+
+    <TextView
+        android:id="@+id/txtRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/txtRegister"
+        android:layout_marginBottom="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
