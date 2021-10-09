@@ -4,6 +4,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Register">
+
+    <TextView
+        android:id="@+id/txtSignup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/signup"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/register_edtUsername"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:background="@drawable/white_background_edit_text"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSignup" />
+
+    <EditText
+        android:id="@+id/register_edtPassword"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:background="@drawable/white_background_edit_text"
+        android:ems="10"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_edtUsername" />
+
+    <EditText
+        android:id="@+id/register_edtConfirmPassword"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:background="@drawable/white_background_edit_text"
+        android:ems="10"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:hint="@string/confirmPassword"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_edtPassword" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/register"
+        android:layout_marginTop="30dp"
+        app:backgroundTint="@color/purple_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_edtConfirmPassword" />
+
+    <TextView
+        android:id="@+id/txtBackToLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/backToLogin"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

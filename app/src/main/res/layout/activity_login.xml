@@ -29,30 +29,32 @@
         android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/edtUsername" />
+        app:layout_constraintBottom_toTopOf="@id/login_edtUsername" />
 
     <EditText
-        android:id="@+id/edtUsername"
+        android:id="@+id/login_edtUsername"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_marginBottom="25dp"
         android:background="@drawable/white_background_edit_text"
         android:ems="10"
+        android:textColor="@color/black"
         android:gravity="center"
         android:hint="@string/username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/edtPassword" />
+        app:layout_constraintBottom_toTopOf="@id/login_edtPassword" />
 
     <EditText
-        android:id="@+id/edtPassword"
+        android:id="@+id/login_edtPassword"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/white_background_edit_text"
         android:ems="10"
         android:gravity="center"
+        android:textColor="@color/black"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,13 +65,14 @@
         android:id="@+id/btnLogin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:text="@string/login"
+        app:backgroundTint="@color/purple_500"
+        app:layout_constraintBottom_toTopOf="@id/txtOr"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/txtOr"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtOr"
