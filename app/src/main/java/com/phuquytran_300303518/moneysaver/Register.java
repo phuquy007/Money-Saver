@@ -82,27 +82,24 @@ public class Register extends AppCompatActivity {
 
         loadingProgressBar.setVisibility(View.VISIBLE);
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful())
-                {
-                    //Sign up successfully
-                    Log.d(TAG, "onComplete: successfully");
-                    FirebaseUser user = mAuth.getCurrentUser();
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful())
+            {
+                //Sign up successfully
+                Log.i(TAG, "onComplete: successfully");
+                FirebaseUser user = mAuth.getCurrentUser();
 
-                    //Save to firebase Database
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseRef = database.getReference("users").child(user.getUid());
-                    Toast.makeText(Register.this, "User Created Successfully!", Toast.LENGTH_SHORT).show();
-                    goToLogin();
+                //Save to firebase Database
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference databaseRef = database.getReference("users").child(user.getUid());
+                Toast.makeText(Register.this, "User Created Successfully!", Toast.LENGTH_SHORT).show();
+                goToLogin();
 
-                }else{
-                    //Sign up fail
-                    Log.w(TAG, "onComplete: Failed", task.getException());
-                    Toast.makeText(Register.this, "Register failed", Toast.LENGTH_SHORT).show();
-                    goToLogin();
-                }
+            }else{
+                //Sign up fail
+                Log.w(TAG, "onComplete: Failed", task.getException());
+                Toast.makeText(Register.this, "Register failed", Toast.LENGTH_SHORT).show();
+                goToLogin();
             }
         });
     }
