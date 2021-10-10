@@ -38,6 +38,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
+
 public class Login extends AppCompatActivity {
     private static final int GG_SIGN_IN = 3;
     private static final int FB_SIGN_IN = 2;
@@ -48,13 +50,19 @@ public class Login extends AppCompatActivity {
     Button btnLogin;
     ImageButton btnGoogle, btnFacebook;
     CallbackManager mCallbackManager;
+    LoginManager loginManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        loginManager = LoginManager.getInstance();
 
         goToRegister = findViewById(R.id.txtRegister);
         edtEmail = findViewById(R.id.login_edtUsername);
@@ -62,8 +70,8 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnGoogle = findViewById(R.id.btnGoogle);
         btnFacebook = findViewById(R.id.btnFacebook);
-        mCallbackManager = CallbackManager.Factory.create();
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
 
         goToRegister.setOnClickListener(view ->  {
                 Intent registerIntent = new Intent(Login.this, Register.class);
@@ -81,6 +89,8 @@ public class Login extends AppCompatActivity {
 
         btnFacebook.setOnClickListener(view -> {
             onFacebookLogin(view);
+            loginManager.logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "email"));
+//            onFacebookLogin(view);
         });
     }
 
@@ -141,9 +151,10 @@ public class Login extends AppCompatActivity {
             } catch (ApiException e){
                 Log.w(TAG, "Google sign in failed", e);
             }
-        }else if(requestCode == FB_SIGN_IN) {
-            mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
+//        else if(requestCode == FB_SIGN_IN) {
+//            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+//        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -162,42 +173,28 @@ public class Login extends AppCompatActivity {
     }
 
     public void onFacebookLogin(View v){
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        loginManager = LoginManager.getInstance();
+        loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess: " + loginResult);
+                Toast.makeText(Login.this, "facebook: onSuccess", Toast.LENGTH_SHORT).show();
                 firebaseAuthWithFacebook(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook: onCancel");
+                Toast.makeText(Login.this, "on Cancel", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook: onError", error);
+                Toast.makeText(Login.this, "On Error", Toast.LENGTH_SHORT).show();
             }
         });
-//        @SuppressLint("WrongViewCast") LoginButton loginButton = findViewById(R.id.btnFacebook);
-//        loginButton.setReadPermissions("email", "public_profile");
-//        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d(TAG, "facebook:onSuccess: " + loginResult);
-//                firebaseAuthWithFacebook(loginResult.getAccessToken());
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Log.d(TAG, "facebook: onCancel");
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Log.d(TAG, "facebook: onError", error);
-//            }
-//        });
     }
 
     private void firebaseAuthWithFacebook(AccessToken token){

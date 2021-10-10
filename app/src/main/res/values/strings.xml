@@ -9,5 +9,5 @@
     <string name="signup">Sign Up</string>
     <string name="register">Register</string>
     <string name="backToLogin">Already have an account</string>
-    <string name="facebook_app_id">1079019669573441</string>
+    <string name="facebook_app_id" translatable="false">1079019669573441</string>
 </resources>
