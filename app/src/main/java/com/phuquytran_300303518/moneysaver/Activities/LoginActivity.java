@@ -1,12 +1,6 @@
-package com.phuquytran_300303518.moneysaver;
+package com.phuquytran_300303518.moneysaver.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +11,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,7 +22,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,13 +34,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.phuquytran_300303518.moneysaver.R;
 
 import java.util.Arrays;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private static final int GG_SIGN_IN = 3;
     private static final int FB_SIGN_IN = 2;
-    private static final String TAG = "Login";
+    private static final String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
     TextView goToRegister;
     EditText edtEmail, edtPassword;
@@ -74,7 +72,7 @@ public class Login extends AppCompatActivity {
 
 
         goToRegister.setOnClickListener(view ->  {
-                Intent registerIntent = new Intent(Login.this, Register.class);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
             }
         );
@@ -89,7 +87,7 @@ public class Login extends AppCompatActivity {
 
         btnFacebook.setOnClickListener(view -> {
             onFacebookLogin(view);
-            loginManager.logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "email"));
+            loginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
 //            onFacebookLogin(view);
         });
     }
@@ -97,16 +95,16 @@ public class Login extends AppCompatActivity {
     public void login(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()){
-                Toast.makeText(Login.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "LoginActivity successfully!", Toast.LENGTH_SHORT).show();
                 goToMain();
             }else{
-                Toast.makeText(Login.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void goToMain(){
-        Intent mainIntent = new Intent(Login.this, MainActivity.class);
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
     }
 
@@ -133,7 +131,7 @@ public class Login extends AppCompatActivity {
                 .build();
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(googleSignInIntent, GG_SIGN_IN);
+//        startActivityForResult(googleSignInIntent, GG_SIGN_IN);
     }
 
     @Override
@@ -175,24 +173,24 @@ public class Login extends AppCompatActivity {
     public void onFacebookLogin(View v){
         loginManager = LoginManager.getInstance();
         loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
+//            @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess: " + loginResult);
-                Toast.makeText(Login.this, "facebook: onSuccess", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "facebook: onSuccess", Toast.LENGTH_SHORT).show();
                 firebaseAuthWithFacebook(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook: onCancel");
-                Toast.makeText(Login.this, "on Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "on Cancel", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook: onError", error);
-                Toast.makeText(Login.this, "On Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "On Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -209,7 +207,7 @@ public class Login extends AppCompatActivity {
                     goToMain();
                 }else{
                     Log.w(TAG, "Sign In With Credential: failure", task.getException());
-                    Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,7 +1,4 @@
-package com.phuquytran_300303518.moneysaver;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.phuquytran_300303518.moneysaver.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +11,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.phuquytran_300303518.moneysaver.model.User;
+import com.phuquytran_300303518.moneysaver.R;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     TextView txtGoToLogin;
     EditText rEmail, rPassword, rConfirmPassword;
     Button btnRegister;
@@ -31,7 +27,7 @@ public class Register extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
-    final static String TAG = "Register";
+    final static String TAG = "RegisterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,19 +88,19 @@ public class Register extends AppCompatActivity {
                 //Save to firebase Database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference databaseRef = database.getReference("users").child(user.getUid());
-                Toast.makeText(Register.this, "User Created Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "User Created Successfully!", Toast.LENGTH_SHORT).show();
                 goToLogin();
 
             }else{
                 //Sign up fail
                 Log.w(TAG, "onComplete: Failed", task.getException());
-                Toast.makeText(Register.this, "Register failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "RegisterActivity failed", Toast.LENGTH_SHORT).show();
                 goToLogin();
             }
         });
     }
     public void goToLogin(){
-        Intent loginIntent = new Intent(Register.this, Login.class);
+        Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
 }

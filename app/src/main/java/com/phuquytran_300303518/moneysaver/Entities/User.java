@@ -1,4 +1,4 @@
-package com.phuquytran_300303518.moneysaver.model;
+package com.phuquytran_300303518.moneysaver.Entities;
 
 import com.google.firebase.database.DataSnapshot;
 
