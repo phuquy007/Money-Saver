@@ -40,7 +40,6 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int GG_SIGN_IN = 3;
-    private static final int FB_SIGN_IN = 2;
     private static final String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
     TextView goToRegister;
@@ -53,11 +52,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
+        //Initial Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
 
+        //Initialize facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
@@ -70,32 +70,34 @@ public class LoginActivity extends AppCompatActivity {
         btnFacebook = findViewById(R.id.btnFacebook);
 
 
-
+        //Go to register activity
         goToRegister.setOnClickListener(view ->  {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
             }
         );
 
+        //on Button Login Click
         btnLogin.setOnClickListener(view -> {
             onLoginClick(view);
         });
 
+        //on button Google Click
         btnGoogle.setOnClickListener(view ->{
             onGoogleLogin(view);
         });
 
+        //on button Facebook Click
         btnFacebook.setOnClickListener(view -> {
             onFacebookLogin(view);
             loginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
-//            onFacebookLogin(view);
         });
     }
 
+    //Login with email and password through firebase authentication
     public void login(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()){
-                Toast.makeText(LoginActivity.this, "LoginActivity successfully!", Toast.LENGTH_SHORT).show();
                 goToMain();
             }else{
                 Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
@@ -103,11 +105,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //To to Main Activity
     public void goToMain(){
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
     }
 
+    //Validate the email and password before login, add more later
     public void onLoginClick(View v){
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
@@ -124,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         login(email, password);
     }
 
+    //on Google Login, start the Google Sign In Activity and get back the result
     public void onGoogleLogin(View v){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -131,45 +136,28 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
-//        startActivityForResult(googleSignInIntent, GG_SIGN_IN);
+        startActivityForResult(googleSignInIntent, GG_SIGN_IN);
     }
 
+    //Get the result back from Google Sign in, If success, send the token to firebase login with token
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: Request Code: "+requestCode);
-        Log.d(TAG, "onActivityResult: Result Code: "+resultCode);
+
         if (requestCode == GG_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 //Google Sign in was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle: " + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
+                firebaseAuthenticationWithToken(account.getIdToken());
             } catch (ApiException e){
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
-//        else if(requestCode == FB_SIGN_IN) {
-//            mCallbackManager.onActivityResult(requestCode, resultCode, data);
-//        }
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success");
-                        goToMain();
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                    }
-                });
-    }
-
+    //On Facebook Login, start the facebook login manager, if users sign in successful, get access token and pass to firebase login with token
     public void onFacebookLogin(View v){
         loginManager = LoginManager.getInstance();
         loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -177,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess: " + loginResult);
                 Toast.makeText(LoginActivity.this, "facebook: onSuccess", Toast.LENGTH_SHORT).show();
-                firebaseAuthWithFacebook(loginResult.getAccessToken());
+                firebaseAuthenticationWithToken(loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -194,22 +182,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void firebaseAuthWithFacebook(AccessToken token){
-        Log.d(TAG, "firebaseAuthWithFacebook: " + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d(TAG, "Sign In With Credential: success");
-                    goToMain();
-                }else{
-                    Log.w(TAG, "Sign In With Credential: failure", task.getException());
-                    Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    //Firebase sign in with google, use the token from google to login
+    private void firebaseAuthenticationWithToken(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        goToMain();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                    }
+                });
     }
 }

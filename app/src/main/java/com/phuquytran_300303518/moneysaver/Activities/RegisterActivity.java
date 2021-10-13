@@ -52,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    //on Register login, Check the input then create a new user
     public void onRegisterClick(View v){
         String email = rEmail.getText().toString();
         String password = rPassword.getText().toString();
