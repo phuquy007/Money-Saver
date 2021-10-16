@@ -1,8 +1,10 @@
 package com.phuquytran_300303518.moneysaver.Activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.phuquytran_300303518.moneysaver.Fragments.ArchievementFragment;
@@ -13,10 +15,11 @@ import com.phuquytran_300303518.moneysaver.R;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    TransactionFragment transactionFragment = new TransactionFragment();
-    PlanFragment planFragment = new PlanFragment();
-    ReportFragment reportFragment = new ReportFragment();
-    ArchievementFragment archievementFragment = new ArchievementFragment();
+    TransactionFragment transactionFragment;
+    PlanFragment planFragment;
+    ReportFragment reportFragment;
+    ArchievementFragment archievementFragment;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,21 +27,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigatin_view);
-
+        fragmentManager = getSupportFragmentManager();
+        transactionFragment = new TransactionFragment(fragmentManager);
+        planFragment = new PlanFragment();
+        reportFragment = new ReportFragment();
+        archievementFragment = new ArchievementFragment();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.transaction:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, transactionFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, transactionFragment).commit();
                     return true;
                 case R.id.plan:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, planFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, planFragment).commit();
                     return true;
                 case R.id.report:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, reportFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, reportFragment).commit();
                     return true;
                 case R.id.archievement:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, archievementFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, archievementFragment).commit();
+                    return true;
+                case R.id.add:
+                    Toast.makeText(this, "Add ", Toast.LENGTH_SHORT).show();
                     return true;
             }
             return false;

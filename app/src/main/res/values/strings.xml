@@ -10,6 +10,16 @@
     <string name="register">Register</string>
     <string name="backToLogin">Already have an account</string>
     <string name="facebook_app_id" translatable="false">1079019669573441</string>
+    <string name="inFlow">InFlow</string>
+    <string name="outFlow">OutFlow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="transaction_title">Transaction Title</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="transaction_amount">Transaction Amount</string>
+    <string name="transaction_desciption">Transaction Description</string>
+    <string name="transaction_addTransaction">Add</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
 </resources>

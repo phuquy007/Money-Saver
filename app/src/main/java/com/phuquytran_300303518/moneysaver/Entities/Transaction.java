@@ -3,17 +3,30 @@ package com.phuquytran_300303518.moneysaver.Entities;
 public class Transaction {
     private String transactionID;
     private String transactionTitle;
+    private String type;
     private String transactionDescription;
     private Double transactionAmount;
     private String walletID;
     private String CategoryID;
 
     public Transaction(){
-
+        this.transactionTitle = "";
+        this.type = "";
+        this.transactionAmount = 0.0;
+        transactionDescription = "";
     }
-    public Transaction(String transactionTitle, Double transactionAmount) {
+    public Transaction(String transactionTitle, String type, Double transactionAmount ) {
         this.transactionTitle = transactionTitle;
+        this.type = type;
         this.transactionAmount = transactionAmount;
+        transactionDescription = "";
+    }
+
+    public Transaction(String transactionTitle, String type, Double transactionAmount, String transactionDescription) {
+        this.transactionTitle = transactionTitle;
+        this.type = type;
+        this.transactionAmount = transactionAmount;
+        this.transactionDescription = transactionDescription;
     }
 
     public String getTransactionID() {
@@ -31,7 +44,13 @@ public class Transaction {
     public void setTransactionTitle(String transactionTitle) {
         this.transactionTitle = transactionTitle;
     }
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
     public String getTransactionDescription() {
         return transactionDescription;
     }

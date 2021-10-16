@@ -1,5 +1,6 @@
 package com.phuquytran_300303518.moneysaver.Adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         Transaction transaction = transactions.get(position);
 
         holder.txtTransactionTitle.setText(transaction.getTransactionTitle());
+        if (transaction.getTransactionAmount() >= 0)
+            holder.txtTransactionAmount.setTextColor(Color.GREEN);
+        else holder.txtTransactionAmount.setTextColor(Color.RED);
         holder.txtTransactionAmount.setText(transaction.getTransactionAmount().toString());
     }
 
