@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.phuquytran_300303518.moneysaver.Fragments.ArchievementFragment;
+import com.phuquytran_300303518.moneysaver.Fragments.AchievementFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.PlanFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.ReportFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.TransactionFragment;
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     TransactionFragment transactionFragment;
     PlanFragment planFragment;
     ReportFragment reportFragment;
-    ArchievementFragment archievementFragment;
+    AchievementFragment archievementFragment;
     FragmentManager fragmentManager;
 
     @Override
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         transactionFragment = new TransactionFragment(fragmentManager);
         planFragment = new PlanFragment();
         reportFragment = new ReportFragment();
-        archievementFragment = new ArchievementFragment();
+        archievementFragment = new AchievementFragment();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
