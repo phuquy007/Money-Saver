@@ -1,9 +1,13 @@
 package com.phuquytran_300303518.moneysaver.Adapters;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,9 +21,11 @@ import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
     private List<Transaction> transactions;
+    Context context;
 
-    public TransactionAdapter(List<Transaction> transactions){
+    public TransactionAdapter(List<Transaction> transactions, Context context){
         this.transactions = transactions;
+        this.context = context;
     }
     @NonNull
     @Override
@@ -42,6 +48,25 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             holder.txtTransactionAmount.setText("-"+transaction.getTransactionAmount());
         }
 
+        holder.btnDelete.setOnClickListener(view -> {
+            DialogInterface.OnClickListener dialogOnClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch(i){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            deleteTransaction(transactions.get(position));
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Do you want to delete the Transaction?").setPositiveButton("Yes", dialogOnClickListener)
+                    .setNegativeButton("No", dialogOnClickListener).show();
+        });
+
     }
 
     @Override
@@ -51,11 +76,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView txtTransactionTitle, txtTransactionAmount;
+        ImageButton btnDelete;
 
         public ViewHolder(@NonNull View v) {
             super(v);
             txtTransactionTitle = v.findViewById(R.id.item_transactionTitle);
             txtTransactionAmount = v.findViewById(R.id.item_transactionAmount);
+            btnDelete = v.findViewById(R.id.item_transactionDelete);
         }
+    }
+
+    public void deleteTransaction(Transaction deletedTransaction){
+
+//        transactions.remove(position);
+//        notifyDataSetChanged();
     }
 }

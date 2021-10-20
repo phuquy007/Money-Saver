@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class TransactionFragment extends Fragment {
     private RecyclerView rcv_transactions;
     TextView txtTransaction_inflow, txtTransaction_outflow;
     FloatingActionButton fabTransaction_addTransaction;
+    ImageButton btnDelete;
     List<Transaction> transactions;
     FragmentManager fragmentManager;
     FirebaseDatabase database;
@@ -69,11 +71,10 @@ public class TransactionFragment extends Fragment {
                     transactions.add(transaction);
                 }
 
-
-
                 txtTransaction_inflow = view.findViewById(R.id.txtTransaction_inFlow);
                 txtTransaction_outflow = view.findViewById(R.id.txtTransaction_outFlow);
                 fabTransaction_addTransaction = view.findViewById(R.id.fabTransaction_newTransaction);
+                btnDelete = view.findViewById(R.id.item_transactionDelete);
 
                 //Start the new Add Transaction Fragment
                 fabTransaction_addTransaction.setOnClickListener(v -> {
@@ -86,7 +87,7 @@ public class TransactionFragment extends Fragment {
                 //Set up the fragment, set layoutmanager and adapter
                 rcv_transactions = view.findViewById(R.id.rcv_transactions);
                 rcv_transactions.setHasFixedSize(true);
-                TransactionAdapter transactionAdapter = new TransactionAdapter(transactions);
+                TransactionAdapter transactionAdapter = new TransactionAdapter(transactions, view.getContext());
                 rcv_transactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
                 rcv_transactions.setAdapter(transactionAdapter);
 
