@@ -10,6 +10,7 @@ public class Transaction {
     private TransactionType type;
     private String transactionDescription;
     private Double transactionAmount;
+    private TransactionDate date;
 
 //    private String walletID;
 //    private String CategoryID;
@@ -17,20 +18,22 @@ public class Transaction {
     public Transaction(){
 
     }
-    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount ) {
+    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount, TransactionDate date ) {
         this.transactionID = UUID.randomUUID().toString();
         this.transactionTitle = transactionTitle;
         this.type = type;
         this.transactionAmount = transactionAmount;
         transactionDescription = "";
+        this.date = date;
     }
 
-    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount, String transactionDescription) {
+    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount, String transactionDescription, TransactionDate date) {
         this.transactionID = UUID.randomUUID().toString();
         this.transactionTitle = transactionTitle;
         this.type = type;
         this.transactionAmount = transactionAmount;
         this.transactionDescription = transactionDescription;
+        this.date = date;
     }
 
     public String getTransactionID() {
@@ -69,5 +72,13 @@ public class Transaction {
 
     public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
+    }
+
+    public TransactionDate getDate() {
+        return date;
+    }
+
+    public void setDate(TransactionDate date) {
+        this.date = date;
     }
 }

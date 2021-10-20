@@ -15,16 +15,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/transaction_TabItem_Today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/transaction_TabItem_Week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/this_week" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/transaction_TabItem_Month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/this_month" />
@@ -48,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#8BC34A"
+        android:textColor="#7CCC20"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"

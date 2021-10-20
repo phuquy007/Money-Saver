@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,8 @@ import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionFragment extends Fragment {
@@ -36,7 +39,10 @@ public class TransactionFragment extends Fragment {
     TextView txtTransaction_inflow, txtTransaction_outflow;
     FloatingActionButton fabTransaction_addTransaction;
     ImageButton btnDelete;
+    TabLayout tabLayout;
+
     List<Transaction> transactions;
+    List<Transaction> filteredTransactions;
     FragmentManager fragmentManager;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
@@ -57,6 +63,7 @@ public class TransactionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
 
         transactions = new ArrayList<>();
+        filteredTransactions = new ArrayList<>();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(user.getUid());
@@ -75,23 +82,43 @@ public class TransactionFragment extends Fragment {
                 txtTransaction_outflow = view.findViewById(R.id.txtTransaction_outFlow);
                 fabTransaction_addTransaction = view.findViewById(R.id.fabTransaction_newTransaction);
                 btnDelete = view.findViewById(R.id.item_transactionDelete);
+                tabLayout = view.findViewById(R.id.transactionTabLayout);
+                filterTransactions(transactions, "Today");
+                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        filterTransactions(transactions, tab.getText().toString());
+                        txtTransaction_inflow.setText("+" + getInFlow(filteredTransactions));
+                        txtTransaction_outflow.setText("-" + getOutFlow(filteredTransactions));
+
+                        updateUI(view);
+
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        updateUI(view);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+                        filterTransactions(transactions, tab.getText().toString());
+                        txtTransaction_inflow.setText("+" + getInFlow(filteredTransactions));
+                        txtTransaction_outflow.setText("-" + getOutFlow(filteredTransactions));
+
+                        updateUI(view);
+                    }
+                });
 
                 //Start the new Add Transaction Fragment
                 fabTransaction_addTransaction.setOnClickListener(v -> {
                     fragmentManager.beginTransaction().replace(R.id.nav_fragment, new AddTransactionFragment(fragmentManager)).addToBackStack(null).commit();
                 });
 
-                txtTransaction_inflow.setText("+" + getInFlow(transactions));
-                txtTransaction_outflow.setText("-" + getOutFlow(transactions));
+                txtTransaction_inflow.setText("+" + getInFlow(filteredTransactions));
+                txtTransaction_outflow.setText("-" + getOutFlow(filteredTransactions));
 
-                //Set up the fragment, set layoutmanager and adapter
-                rcv_transactions = view.findViewById(R.id.rcv_transactions);
-                rcv_transactions.setHasFixedSize(true);
-                TransactionAdapter transactionAdapter = new TransactionAdapter(transactions, view.getContext());
-                rcv_transactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                rcv_transactions.setAdapter(transactionAdapter);
-
-
+                updateUI(view);
             }
 
             @Override
@@ -104,9 +131,18 @@ public class TransactionFragment extends Fragment {
         return view;
     }
 
+    private void updateUI(View view){
+        //Set up the fragment, set layoutmanager and adapter
+        rcv_transactions = view.findViewById(R.id.rcv_transactions);
+        rcv_transactions.setHasFixedSize(true);
+        TransactionAdapter transactionAdapter = new TransactionAdapter(filteredTransactions, view.getContext());
+        rcv_transactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rcv_transactions.setAdapter(transactionAdapter);
+    }
+
     private String getInFlow(List<Transaction> transactions){
         double result = 0.0;
-        if (transactions.size() > 0){
+        if (transactions != null && !transactions.isEmpty()){
             for(int i = 0; i < transactions.size(); i++){
                 Transaction transaction = transactions.get(i);
                 if (transaction.getType() == TransactionType.INCOME){
@@ -119,7 +155,7 @@ public class TransactionFragment extends Fragment {
 
     private String getOutFlow(List<Transaction> transactions){
         double result = 0.0;
-        if (transactions.size() > 0){
+        if (transactions != null && !transactions.isEmpty()){
             for(int i = 0; i < transactions.size(); i++){
                 Transaction transaction = transactions.get(i);
                 if (transaction.getType() == TransactionType.EXPENSE){
@@ -128,5 +164,38 @@ public class TransactionFragment extends Fragment {
             }
         }
         return String.format("%.2f", result);
+    }
+
+    public void filterTransactions(List<Transaction> transactions, String filter){
+
+        filteredTransactions.clear();
+        Date today = Calendar.getInstance().getTime();
+        int year = today.getYear()+1900;
+        int month = today.getMonth() + 1;
+        int day = today.getDate();
+        int thisWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+//        Toast.makeText(getContext(), "Day: " + day + " Week: "+ thisWeek + " Month: " + month + " Year: " + year, Toast.LENGTH_SHORT).show();
+        switch (filter){
+            case "Today":
+                for (Transaction transaction: transactions) {
+                    if (year == transaction.getDate().getYear() && month == transaction.getDate().getMonth() && day == transaction.getDate().getDay()) {
+                        filteredTransactions.add(transaction);
+                    }
+                }
+                break;
+            case "This Week":
+                for (Transaction transaction: transactions){
+                    if(year == transaction.getDate().getYear() && thisWeek == transaction.getDate().getWeek()){
+                        filteredTransactions.add(transaction);
+                    }
+                }
+                break;
+            case "This Month":
+                for(Transaction transaction: transactions){
+                    if(year == transaction.getDate().getYear() && month == transaction.getDate().getMonth()){
+                        filteredTransactions.add(transaction);
+                    }
+                }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.phuquytran_300303518.moneysaver.Fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,15 +18,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
+import com.phuquytran_300303518.moneysaver.Entities.TransactionDate;
 import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
+
+import java.util.Calendar;
 
 
 public class AddTransactionFragment extends Fragment {
     FragmentManager fragmentManager;
-    EditText edtTransactionTitle, edtTransactionAmount, edtTransactionDescription;
+    EditText edtTransactionTitle, edtTransactionAmount, edtTransactionDescription, getEdtTransactionDate;
     Spinner spnTransactionType;
     Button btnAdd;
+    int transactionDay, transactionWeek, transactionMonth, transactionYear;
 
     public static final String INCOME = "Income";
     public static final String TRANSACTION = "transactions";
@@ -61,8 +66,31 @@ public class AddTransactionFragment extends Fragment {
         edtTransactionTitle = view.findViewById(R.id.edtAddTransaction_Title);
         edtTransactionAmount = view.findViewById(R.id.edtAddTransaction_Amount);
         edtTransactionDescription = view.findViewById(R.id.edtAddTransaction_Description);
+        getEdtTransactionDate = view.findViewById(R.id.edtAddTransaction_Date);
         spnTransactionType = view.findViewById(R.id.spnAddTransaction_Type);
         btnAdd = view.findViewById(R.id.btnAddTransaction_Add);
+
+        getEdtTransactionDate.setOnClickListener(view1 -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePicker = new DatePickerDialog(getContext(), (view2, year1, monthOfYear, dayOfMonth) -> {
+                calendar.set(year1, monthOfYear, dayOfMonth);
+                monthOfYear += 1;
+                int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+                transactionDay = dayOfMonth;
+                transactionWeek = weekOfYear;
+                transactionMonth = monthOfYear;
+                transactionYear = year1;
+                getEdtTransactionDate.setText(dayOfMonth + "/" + monthOfYear + "/" + year1 + " week: "+weekOfYear);
+
+            }, year, month, day);
+            datePicker.show();
+
+
+        });
 
         btnAdd.setOnClickListener(v ->{
             addNewTransaction();
@@ -83,17 +111,22 @@ public class AddTransactionFragment extends Fragment {
             edtTransactionAmount.setError("Please enter the amount");
             return;
         }
+        if (TextUtils.isEmpty(getEdtTransactionDate.getText())){
+            getEdtTransactionDate.setError("Please select the date");
+            return;
+        }
 
         String title = edtTransactionTitle.getText().toString();
         double amount =  Double.parseDouble(edtTransactionAmount.getText().toString());
         String type = spnTransactionType.getSelectedItem().toString();
         String description = edtTransactionDescription.getText().toString();
 
+        TransactionDate transactionDate = new TransactionDate(transactionDay, transactionWeek, transactionMonth, transactionYear);
         //Add to firebase later
-        Transaction newTransaction = new Transaction(title, (type.compareTo(INCOME)==0? TransactionType.INCOME:TransactionType.EXPENSE), amount, description);
+        Transaction newTransaction = new Transaction(title, (type.compareTo(INCOME)==0? TransactionType.INCOME:TransactionType.EXPENSE), amount, description, transactionDate);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference().child(user.getUid()).child(TRANSACTION).push().setValue(newTransaction);
+        FirebaseDatabase.getInstance().getReference().child(user.getUid()).child(TRANSACTION).child(newTransaction.getTransactionID()).setValue(newTransaction);
 
         //Back to transaction Fragment
         fragmentManager.popBackStack();

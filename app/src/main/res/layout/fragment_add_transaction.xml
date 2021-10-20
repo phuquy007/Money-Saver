@@ -26,6 +26,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/edtAddTransaction_Date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/transaction_date"
+        android:focusable="false"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtAddTransaction_Amount" />
+
     <RelativeLayout
         android:id="@+id/spinnerRelative"
         android:layout_width="match_parent"
@@ -89,7 +109,7 @@
         android:paddingTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtAddTransaction_Amount" />
+        app:layout_constraintTop_toBottomOf="@+id/edtAddTransaction_Date" />
 
     <Button
         android:id="@+id/btnAddTransaction_Add"

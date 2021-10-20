@@ -13,6 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
 import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
@@ -21,6 +25,7 @@ import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
     private List<Transaction> transactions;
+    private static final String TRANSACTION = "transactions";
     Context context;
 
     public TransactionAdapter(List<Transaction> transactions, Context context){
@@ -49,16 +54,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
 
         holder.btnDelete.setOnClickListener(view -> {
-            DialogInterface.OnClickListener dialogOnClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    switch(i){
-                        case DialogInterface.BUTTON_POSITIVE:
-                            deleteTransaction(transactions.get(position));
-                            break;
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            break;
-                    }
+            DialogInterface.OnClickListener dialogOnClickListener = (dialogInterface, i) -> {
+                switch(i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteTransaction(transactions.get(position));
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
                 }
             };
 
@@ -71,7 +73,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public int getItemCount() {
-        return transactions.size();
+        if (transactions != null && !transactions.isEmpty())
+            return transactions.size();
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -87,8 +91,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     public void deleteTransaction(Transaction deletedTransaction){
-
-//        transactions.remove(position);
-//        notifyDataSetChanged();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(user.getUid()).child(TRANSACTION);
+        ref.child(deletedTransaction.getTransactionID()).removeValue();
+        notifyDataSetChanged();
     }
 }
