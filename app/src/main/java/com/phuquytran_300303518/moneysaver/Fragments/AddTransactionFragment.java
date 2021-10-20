@@ -13,8 +13,13 @@ import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
+import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
+
 
 public class AddTransactionFragment extends Fragment {
     FragmentManager fragmentManager;
@@ -22,11 +27,13 @@ public class AddTransactionFragment extends Fragment {
     Spinner spnTransactionType;
     Button btnAdd;
 
+    public static final String INCOME = "Income";
+    public static final String TRANSACTION = "transactions";
+
     //Dummy data, replace later
     String[] transactionTypes;
 
     public AddTransactionFragment() {
-        //dummy type, replace later
 
     }
 
@@ -83,9 +90,13 @@ public class AddTransactionFragment extends Fragment {
         String description = edtTransactionDescription.getText().toString();
 
         //Add to firebase later
-        Transaction newTransaction = new Transaction(title, type, amount, description);
+        Transaction newTransaction = new Transaction(title, (type.compareTo(INCOME)==0? TransactionType.INCOME:TransactionType.EXPENSE), amount, description);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().getReference().child(user.getUid()).child(TRANSACTION).push().setValue(newTransaction);
 
         //Back to transaction Fragment
-        fragmentManager.beginTransaction().replace(R.id.nav_fragment, new TransactionFragment(fragmentManager)).commit();
+        fragmentManager.popBackStack();
+
     }
 }

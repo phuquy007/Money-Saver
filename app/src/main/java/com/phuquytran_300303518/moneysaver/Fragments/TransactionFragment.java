@@ -1,40 +1,46 @@
 package com.phuquytran_300303518.moneysaver.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.phuquytran_300303518.moneysaver.Adapters.TransactionAdapter;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
+import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionFragment extends Fragment {
+    private static final String TAG = "Transaction Fragment";
     private RecyclerView rcv_transactions;
     TextView txtTransaction_inflow, txtTransaction_outflow;
     FloatingActionButton fabTransaction_addTransaction;
     List<Transaction> transactions;
     FragmentManager fragmentManager;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
     public TransactionFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        //Add a dummy list to the transaction
-        //Later on, get data from firebase
-        transactions = new ArrayList<>();
-        Transaction dummy1 = new Transaction("transaction1 ","income", 100.0);
-        Transaction dummy2 = new Transaction("transaction2","expense", -100.0);
-        transactions.add(dummy1);
-        transactions.add(dummy2);
-
     }
 
     @Override
@@ -48,52 +54,78 @@ public class TransactionFragment extends Fragment {
         //Inflate the transaction fragment view
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
 
-        txtTransaction_inflow = view.findViewById(R.id.txtTransaction_inFlow);
-        txtTransaction_outflow = view.findViewById(R.id.txtTransaction_outFlow);
-        fabTransaction_addTransaction = view.findViewById(R.id.fabTransaction_newTransaction);
+        transactions = new ArrayList<>();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference(user.getUid());
 
-        //Start the new Add Transaction Fragment
-        fabTransaction_addTransaction.setOnClickListener(v -> {
-            fragmentManager.beginTransaction().replace(R.id.nav_fragment, new AddTransactionFragment(fragmentManager)).commit();
+        DatabaseReference transactionRef = databaseReference.child("transactions");
+        transactionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                transactions.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Transaction transaction = dataSnapshot.getValue(Transaction.class);
+                    transactions.add(transaction);
+                }
+
+
+
+                txtTransaction_inflow = view.findViewById(R.id.txtTransaction_inFlow);
+                txtTransaction_outflow = view.findViewById(R.id.txtTransaction_outFlow);
+                fabTransaction_addTransaction = view.findViewById(R.id.fabTransaction_newTransaction);
+
+                //Start the new Add Transaction Fragment
+                fabTransaction_addTransaction.setOnClickListener(v -> {
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, new AddTransactionFragment(fragmentManager)).addToBackStack(null).commit();
+                });
+
+                txtTransaction_inflow.setText("+" + getInFlow(transactions));
+                txtTransaction_outflow.setText("-" + getOutFlow(transactions));
+
+                //Set up the fragment, set layoutmanager and adapter
+                rcv_transactions = view.findViewById(R.id.rcv_transactions);
+                rcv_transactions.setHasFixedSize(true);
+                TransactionAdapter transactionAdapter = new TransactionAdapter(transactions);
+                rcv_transactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                rcv_transactions.setAdapter(transactionAdapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: Fail");
+            }
         });
-
-        txtTransaction_inflow.setText("+"+Double.toString(getInFlow()));
-        txtTransaction_outflow.setText(Double.toString(getOutFlow()));
-
-        //Set up the fragment, set layoutmanager and adapter
-        rcv_transactions = view.findViewById(R.id.rcv_transactions);
-        rcv_transactions.setHasFixedSize(true);
-        TransactionAdapter transactionAdapter = new TransactionAdapter(transactions);
-        rcv_transactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rcv_transactions.setAdapter(transactionAdapter);
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    private double getInFlow(){
+    private String getInFlow(List<Transaction> transactions){
         double result = 0.0;
         if (transactions.size() > 0){
             for(int i = 0; i < transactions.size(); i++){
                 Transaction transaction = transactions.get(i);
-                if (transaction.getTransactionAmount() > 0){
+                if (transaction.getType() == TransactionType.INCOME){
                     result += transaction.getTransactionAmount();
                 }
             }
         }
-        return  result;
+        return String.format("%.2f", result);
     }
 
-    private double getOutFlow(){
+    private String getOutFlow(List<Transaction> transactions){
         double result = 0.0;
         if (transactions.size() > 0){
             for(int i = 0; i < transactions.size(); i++){
                 Transaction transaction = transactions.get(i);
-                if (transaction.getTransactionAmount() < 0){
+                if (transaction.getType() == TransactionType.EXPENSE){
                     result += transaction.getTransactionAmount();
                 }
             }
         }
-        return  result;
+        return String.format("%.2f", result);
     }
 }

@@ -3,12 +3,15 @@ package com.phuquytran_300303518.moneysaver.Entities;
 import com.google.firebase.database.DataSnapshot;
 
 public class User {
+    private String uid;
     private String name;
     private String email;
     private String dob;
     private String phoneNumber;
 
+
     public User(){
+
         this.name = "";
         this.email = "";
         this.dob = "";

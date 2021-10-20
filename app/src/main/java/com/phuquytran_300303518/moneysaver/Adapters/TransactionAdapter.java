@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
+import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
 import com.phuquytran_300303518.moneysaver.R;
 
 import java.util.List;
@@ -32,10 +33,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         Transaction transaction = transactions.get(position);
 
         holder.txtTransactionTitle.setText(transaction.getTransactionTitle());
-        if (transaction.getTransactionAmount() >= 0)
+        if (transaction.getType() == TransactionType.INCOME){
             holder.txtTransactionAmount.setTextColor(Color.GREEN);
-        else holder.txtTransactionAmount.setTextColor(Color.RED);
-        holder.txtTransactionAmount.setText(transaction.getTransactionAmount().toString());
+            holder.txtTransactionAmount.setText("+"+transaction.getTransactionAmount());
+        }
+        else{
+            holder.txtTransactionAmount.setTextColor(Color.RED);
+            holder.txtTransactionAmount.setText("-"+transaction.getTransactionAmount());
+        }
+
     }
 
     @Override
@@ -44,12 +50,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public View itemView;
         TextView txtTransactionTitle, txtTransactionAmount;
 
         public ViewHolder(@NonNull View v) {
             super(v);
-            itemView = v;
             txtTransactionTitle = v.findViewById(R.id.item_transactionTitle);
             txtTransactionAmount = v.findViewById(R.id.item_transactionAmount);
         }

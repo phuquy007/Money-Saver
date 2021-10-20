@@ -1,28 +1,32 @@
 package com.phuquytran_300303518.moneysaver.Entities;
 
+import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
+
+import java.util.UUID;
+
 public class Transaction {
     private String transactionID;
     private String transactionTitle;
-    private String type;
+    private TransactionType type;
     private String transactionDescription;
     private Double transactionAmount;
-    private String walletID;
-    private String CategoryID;
+
+//    private String walletID;
+//    private String CategoryID;
 
     public Transaction(){
-        this.transactionTitle = "";
-        this.type = "";
-        this.transactionAmount = 0.0;
-        transactionDescription = "";
+
     }
-    public Transaction(String transactionTitle, String type, Double transactionAmount ) {
+    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount ) {
+        this.transactionID = UUID.randomUUID().toString();
         this.transactionTitle = transactionTitle;
         this.type = type;
         this.transactionAmount = transactionAmount;
         transactionDescription = "";
     }
 
-    public Transaction(String transactionTitle, String type, Double transactionAmount, String transactionDescription) {
+    public Transaction(String transactionTitle, TransactionType type, Double transactionAmount, String transactionDescription) {
+        this.transactionID = UUID.randomUUID().toString();
         this.transactionTitle = transactionTitle;
         this.type = type;
         this.transactionAmount = transactionAmount;
@@ -44,11 +48,11 @@ public class Transaction {
     public void setTransactionTitle(String transactionTitle) {
         this.transactionTitle = transactionTitle;
     }
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
     public String getTransactionDescription() {
@@ -65,21 +69,5 @@ public class Transaction {
 
     public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
-    }
-
-    public String getWalletID() {
-        return walletID;
-    }
-
-    public void setWalletID(String walletID) {
-        this.walletID = walletID;
-    }
-
-    public String getCategoryID() {
-        return CategoryID;
-    }
-
-    public void setCategoryID(String categoryID) {
-        CategoryID = categoryID;
     }
 }

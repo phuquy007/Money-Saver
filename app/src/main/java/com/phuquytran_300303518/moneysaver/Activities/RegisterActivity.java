@@ -14,9 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.phuquytran_300303518.moneysaver.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -84,11 +81,6 @@ public class RegisterActivity extends AppCompatActivity {
             {
                 //Sign up successfully
                 Log.i(TAG, "onComplete: successfully");
-                FirebaseUser user = mAuth.getCurrentUser();
-
-                //Save to firebase Database
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseRef = database.getReference("users").child(user.getUid());
                 Toast.makeText(RegisterActivity.this, "User Created Successfully!", Toast.LENGTH_SHORT).show();
                 goToLogin();
 
@@ -96,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                 //Sign up fail
                 Log.w(TAG, "onComplete: Failed", task.getException());
                 Toast.makeText(RegisterActivity.this, "RegisterActivity failed", Toast.LENGTH_SHORT).show();
-                goToLogin();
+
             }
         });
     }
