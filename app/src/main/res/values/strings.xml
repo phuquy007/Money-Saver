@@ -33,4 +33,6 @@
     <string name="drawer_open">Open Drawer Navigation</string>
     <string name="drawer_close">Close Drawer Navigation</string>
     <string name="cancel">Cancel</string>
+    <string name="amount">Amount</string>
+    <string name="plan_payment_title">Plan Payment Title</string>
 </resources>
