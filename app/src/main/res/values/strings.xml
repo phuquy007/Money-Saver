@@ -29,4 +29,7 @@
     <string name="transaction_date">Date</string>
     <string name="categoryName">Category Name</string>
     <string name="categoryDesc">Category Description</string>
+    <string name="log_out">Log out</string>
+    <string name="drawer_open">Open Drawer Navigation</string>
+    <string name="drawer_close">Close Drawer Navigation</string>
 </resources>
