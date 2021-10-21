@@ -13,10 +13,37 @@ public class CategoryList {
         Category entertainment = new Category("entertainment", "Entertainment", R.drawable.entertainment);
         Category food = new Category("food", "Food", R.drawable.food);
         Category income = new Category("income", "Income", R.drawable.income);
+        Category clothes = new Category("cloth", "Clothes", R.drawable.cloth);
+        Category beverage = new Category("beverage", "Beverage", R.drawable.drink);
+        Category electricity = new Category("electricity", "Electricity Bill", R.drawable.electricity);
+        Category gas = new Category("gas", "Gas Bill", R.drawable.gas);
+        Category gift = new Category("gift", "Gift", R.drawable.gift);
+        Category fitness = new Category("fitness", "Fitness", R.drawable.gym);
+        Category insurance = new Category("insurance", "Insurance", R.drawable.insurance);
+        Category investment = new Category("investment", "Investment", R.drawable.investment);
+        Category medical = new Category("medical", "Medical", R.drawable.medical);
+        Category transport = new Category("transport", "Transportation", R.drawable.public_transport);
+        Category mortgage = new Category("mortgage", "Mortgage", R.drawable.mortgage);
+        Category others = new Category("others", "Other Expense", R.drawable.shopping_);
+        Category travel = new Category("travel", "Travel", R.drawable.travel);
+
 
         categories.add(entertainment);
         categories.add(food);
         categories.add(income);
+        categories.add(clothes);
+        categories.add(beverage);
+        categories.add(electricity);
+        categories.add(gas);
+        categories.add(gift);
+        categories.add(fitness);
+        categories.add(insurance);
+        categories.add(investment);
+        categories.add(medical);
+        categories.add(transport);
+        categories.add(mortgage);
+        categories.add(others);
+        categories.add(travel);
     }
 
     public static List<Category> getInstance(){
