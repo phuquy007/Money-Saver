@@ -27,6 +27,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/edtAddTransaction_Category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/category"
+        android:inputType="textPersonName"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtAddTransaction_Title"
+        android:focusable="false"/>
+
+    <EditText
         android:id="@+id/edtAddTransaction_Date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,13 +79,14 @@
         android:background="@drawable/edit_text_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtAddTransaction_Title">
+        app:layout_constraintTop_toBottomOf="@id/edtAddTransaction_Category">
 
         <Spinner
             android:id="@+id/spnAddTransaction_Type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:gravity="center"
             android:paddingLeft="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         Transaction transaction = transactions.get(position);
 
         holder.txtTransactionTitle.setText(transaction.getTransactionTitle());
+        holder.imgCategoryIcon.setImageResource(transaction.getCategory().getLogo());
         if (transaction.getType() == TransactionType.INCOME){
             holder.txtTransactionAmount.setTextColor(Color.GREEN);
             holder.txtTransactionAmount.setText("+"+transaction.getTransactionAmount());
@@ -80,12 +82,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView txtTransactionTitle, txtTransactionAmount;
+        ImageView imgCategoryIcon;
         ImageButton btnDelete;
 
         public ViewHolder(@NonNull View v) {
             super(v);
             txtTransactionTitle = v.findViewById(R.id.item_transactionTitle);
             txtTransactionAmount = v.findViewById(R.id.item_transactionAmount);
+            imgCategoryIcon = v.findViewById(R.id.item_transaction_categoryImg);
             btnDelete = v.findViewById(R.id.item_transactionDelete);
         }
     }
