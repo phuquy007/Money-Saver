@@ -35,7 +35,7 @@ public class AddTransactionFragment extends Fragment {
     EditText edtTransactionTitle, edtTransactionAmount, edtTransactionDescription, edtTransactionDate, edtTransactionCategory;
     Spinner spnTransactionType;
     Category transactionCategory;
-    Button btnAdd;
+    Button btnAdd, btnCancel;
     int transactionDay, transactionWeek, transactionMonth, transactionYear;
 
     public static final String INCOME = "Income";
@@ -76,6 +76,7 @@ public class AddTransactionFragment extends Fragment {
         edtTransactionDate = view.findViewById(R.id.edtAddTransaction_Date);
         spnTransactionType = view.findViewById(R.id.spnAddTransaction_Type);
         btnAdd = view.findViewById(R.id.btnAddTransaction_Add);
+        btnCancel = view.findViewById(R.id.btnAddTransaction_Cancel);
         edtTransactionCategory = view.findViewById(R.id.edtAddTransaction_Category);
 
         edtTransactionDate.setOnClickListener(view1 -> {
@@ -106,6 +107,10 @@ public class AddTransactionFragment extends Fragment {
 
         btnAdd.setOnClickListener(v ->{
             addNewTransaction();
+        });
+
+        btnCancel.setOnClickListener(v-> {
+            fragmentManager.popBackStack();
         });
 
         ArrayAdapter<String> transactionTypeAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, transactionTypes);
@@ -157,4 +162,5 @@ public class AddTransactionFragment extends Fragment {
             }
         }
     }
+
 }
