@@ -10,7 +10,8 @@
     <item android:id="@+id/report"
         android:title="Report"
         android:icon="@drawable/ic_report"/>
-    <item android:id="@+id/archievement"
-        android:title="Archievement"
-        android:icon="@drawable/ic_archievement"/>
+    <item
+        android:id="@+id/achievement"
+        android:icon="@drawable/ic_achievement"
+        android:title="Achievement" />
 </menu>

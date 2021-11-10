@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     TransactionFragment transactionFragment;
     PlanFragment planFragment;
     ReportFragment reportFragment;
-    AchievementFragment archievementFragment;
+    AchievementFragment achievementFragment;
     FragmentManager fragmentManager;
     List<Transaction> transactions;
     FirebaseDatabase database;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         transactionFragment = new TransactionFragment(fragmentManager);
         planFragment = new PlanFragment();
         reportFragment = new ReportFragment();
-        archievementFragment = new AchievementFragment();
+        achievementFragment = new AchievementFragment();
 
 //        toolbar = findViewById(R.id.toolbar);
 
@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.report:
                     fragmentManager.beginTransaction().replace(R.id.nav_fragment, reportFragment).commit();
                     return true;
-                case R.id.archievement:
-                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, archievementFragment).commit();
+                case R.id.achievement:
+                    fragmentManager.beginTransaction().replace(R.id.nav_fragment, achievementFragment).commit();
                     return true;
             }
             return false;

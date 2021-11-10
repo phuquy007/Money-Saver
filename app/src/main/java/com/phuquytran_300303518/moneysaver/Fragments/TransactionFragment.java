@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -140,7 +141,7 @@ public class TransactionFragment extends Fragment {
         rcv_transactions.setAdapter(transactionAdapter);
     }
 
-    private String getInFlow(List<Transaction> transactions){
+    protected static String getInFlow(List<Transaction> transactions){
         double result = 0.0;
         if (transactions != null && !transactions.isEmpty()){
             for(int i = 0; i < transactions.size(); i++){
@@ -153,7 +154,7 @@ public class TransactionFragment extends Fragment {
         return String.format("%.2f", result);
     }
 
-    private String getOutFlow(List<Transaction> transactions){
+    protected static String getOutFlow(List<Transaction> transactions){
         double result = 0.0;
         if (transactions != null && !transactions.isEmpty()){
             for(int i = 0; i < transactions.size(); i++){
