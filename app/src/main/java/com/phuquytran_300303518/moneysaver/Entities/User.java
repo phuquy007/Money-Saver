@@ -3,23 +3,23 @@ package com.phuquytran_300303518.moneysaver.Entities;
 import com.google.firebase.database.DataSnapshot;
 
 public class User {
-    private String uid;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String dob;
     private String phoneNumber;
 
 
     public User(){
-
-        this.name = "";
+        this.firstName = "";
+        this.lastName = "";
         this.email = "";
         this.dob = "";
         this.phoneNumber = "";
     }
 
-    public User(String name, String email, String dob, String phoneNumber){
-        this.name = name;
+    public User(String firstName, String email, String dob, String phoneNumber){
+        this.firstName = firstName;
         this.email = email;
         this.dob = dob;
         this.phoneNumber = phoneNumber;
@@ -27,7 +27,8 @@ public class User {
 
     public static User fromFirebase(DataSnapshot snapshot){
         User user = new User();
-        user.setName(snapshot.child("name").getValue(String.class));
+        user.setFirstName(snapshot.child("firstName").getValue(String.class));
+        user.setLastName(snapshot.child("lastName").getValue(String.class));
         user.setEmail(snapshot.child("email").getValue(String.class));
         user.setDob(snapshot.child("dob").getValue(String.class));
         user.setPhoneNumber(snapshot.child("phoneNumber").getValue(String.class));
@@ -35,12 +36,20 @@ public class User {
         return user;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

@@ -5,21 +5,29 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
 import com.phuquytran_300303518.moneysaver.Fragments.AchievementFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.PlanFragment;
@@ -42,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     TextView txtUsername;
+    TextView txtDisplayName;
+    ImageView imgAvatar;
 
     private static final String TAG = "Main Activity";
 
@@ -56,9 +66,12 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = database.getReference(user.getUid());
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
         NavigationView navView = findViewById(R.id.nav_view);
         View navHeader = navView.getHeaderView(0);
-        txtUsername = navHeader.findViewById(R.id.nav_header_textView);
+        txtDisplayName = navHeader.findViewById(R.id.txtDisplayName);
+        imgAvatar = navHeader.findViewById(R.id.nav_header_imageView);
+        txtUsername = navHeader.findViewById(R.id.txtDisplayName);
         setUpNavigation();
         txtUsername.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
@@ -70,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         archievementFragment = new AchievementFragment();
 
 //        toolbar = findViewById(R.id.toolbar);
+
+        getUser();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
@@ -123,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     goToMainActivity();
                     break;
                 case R.id.navItem_profile:
-
+                    goToProfileActivity();
                     break;
                 case R.id.navItem_settings:
 
@@ -146,5 +161,41 @@ public class MainActivity extends AppCompatActivity {
     public void goToMainActivity(){
         finish();
         startActivity(getIntent());
+    }
+
+    public void goToProfileActivity(){
+        Intent profileIntent = new Intent(this, ProfileActivity.class);
+        startActivity(profileIntent);
+    }
+
+    private void getUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null){
+            txtDisplayName.setText("Not logged in");
+            return;
+        }
+
+        FirebaseDatabase.getInstance().getReference().child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                txtDisplayName.setText(snapshot.child("firstName").getValue(String.class) + " " + snapshot.child("lastName").getValue(String.class));
+
+                String avatarLink = snapshot.child("avatar").getValue(String.class);
+                if (avatarLink == null)
+                    return;
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference("avatars");
+                Glide.with(MainActivity.this)
+                        .load(storageReference.child(avatarLink))
+                        .placeholder(R.drawable.placeholder_square)
+                        .into(imgAvatar);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

@@ -35,4 +35,8 @@
     <string name="cancel">Cancel</string>
     <string name="amount">Amount</string>
     <string name="plan_payment_title">Plan Payment Title</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="done">Done</string>
 </resources>
