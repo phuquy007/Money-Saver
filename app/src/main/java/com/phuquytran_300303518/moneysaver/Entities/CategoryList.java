@@ -17,6 +17,7 @@ public class CategoryList {
         Category beverage = new Category("beverage", "Beverage", R.drawable.drink);
         Category electricity = new Category("electricity", "Electricity Bill", R.drawable.electricity);
         Category gas = new Category("gas", "Gas Bill", R.drawable.gas);
+        Category otherBills = new Category("otherBills", "Other Utility Bills", R.drawable.budget);
         Category gift = new Category("gift", "Gift", R.drawable.gift);
         Category fitness = new Category("fitness", "Fitness", R.drawable.gym);
         Category insurance = new Category("insurance", "Insurance", R.drawable.insurance);
@@ -26,15 +27,17 @@ public class CategoryList {
         Category mortgage = new Category("mortgage", "Mortgage", R.drawable.mortgage);
         Category others = new Category("others", "Other Expense", R.drawable.shopping_);
         Category travel = new Category("travel", "Travel", R.drawable.travel);
-
+        Category rentals = new Category("rentals", "Rentals", R.drawable.mortgage);
+        Category education = new Category("education", "Education", R.drawable.book);
 
         categories.add(entertainment);
         categories.add(food);
+        categories.add(beverage);
         categories.add(income);
         categories.add(clothes);
-        categories.add(beverage);
         categories.add(electricity);
         categories.add(gas);
+        categories.add(otherBills);
         categories.add(gift);
         categories.add(fitness);
         categories.add(insurance);
@@ -42,8 +45,10 @@ public class CategoryList {
         categories.add(medical);
         categories.add(transport);
         categories.add(mortgage);
-        categories.add(others);
+        categories.add(rentals);
         categories.add(travel);
+        categories.add(education);
+        categories.add(others);
     }
 
     public static List<Category> getInstance(){
