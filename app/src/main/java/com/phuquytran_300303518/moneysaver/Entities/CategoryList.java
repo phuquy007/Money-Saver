@@ -25,7 +25,7 @@ public class CategoryList {
         Category medical = new Category("medical", "Medical", R.drawable.medical);
         Category transport = new Category("transport", "Transportation", R.drawable.public_transport);
         Category mortgage = new Category("mortgage", "Mortgage", R.drawable.mortgage);
-        Category others = new Category("others", "Other Expense", R.drawable.shopping_);
+        Category others = new Category("others", "Other Expenses", R.drawable.shopping_);
         Category travel = new Category("travel", "Travel", R.drawable.travel);
         Category rentals = new Category("rentals", "Rentals", R.drawable.mortgage);
         Category education = new Category("education", "Education", R.drawable.book);
