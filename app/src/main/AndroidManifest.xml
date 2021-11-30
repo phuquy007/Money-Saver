@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneySaver">
+        <activity android:name=".Activities.RecommendActivity" ></activity>
         <activity android:name=".Activities.ProfileActivity"></activity>
         <activity android:name=".Activities.AddPlanPaymentActivity" />
         <activity android:name=".Activities.CategoryActivity" />

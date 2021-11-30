@@ -1,10 +1,12 @@
 package com.phuquytran_300303518.moneysaver.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.phuquytran_300303518.moneysaver.Activities.AddPlanPaymentActivity;
+import com.phuquytran_300303518.moneysaver.Activities.RecommendActivity;
 import com.phuquytran_300303518.moneysaver.Adapters.TransactionAdapter;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
 import com.phuquytran_300303518.moneysaver.Enum.TransactionType;
@@ -41,6 +45,7 @@ public class TransactionFragment extends Fragment {
     FloatingActionButton fabTransaction_addTransaction;
     ImageButton btnDelete;
     TabLayout tabLayout;
+    Button btnHints;
 
     List<Transaction> transactions;
     List<Transaction> filteredTransactions;
@@ -126,6 +131,12 @@ public class TransactionFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d(TAG, "onCancelled: Fail");
             }
+        });
+
+        btnHints = view.findViewById(R.id.btnHints);
+        btnHints.setOnClickListener(view1 -> {
+            Intent hintsIntent = new Intent(getContext(), RecommendActivity.class);
+            startActivity(hintsIntent);
         });
 
         // Inflate the layout for this fragment

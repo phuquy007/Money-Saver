@@ -14,12 +14,22 @@
         <entry key="..\:/Money-Saver/app/src/main/res/layout/fragment_transaction.xml" value="0.33" />
         <entry key="..\:/Money-Saver/app/src/main/res/layout/item_transaction.xml" value="0.12545289855072464" />
         <entry key="..\:/Money-Saver/app/src/main/res/menu/menu_bottom_nav.xml" value="0.1" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/font/roboto.xml" value="0.234375" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/activity_add_plan_payment.xml" value="0.1721014492753623" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/activity_category.xml" value="0.1721014492753623" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/activity_main.xml" value="0.1721014492753623" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/activity_profile.xml" value="0.1721014492753623" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/activity_recommend.xml" value="0.25" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/custom_dialog.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_achievement.xml" value="0.16259057971014493" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_add_transaction.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_archievement.xml" value="0.1" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_plan.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_report.xml" value="0.18115942028985507" />
-        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_transaction.xml" value="0.18115942028985507" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/fragment_transaction.xml" value="0.25" />
         <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/layout/nav_header_main.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/menu/menu_bottom_nav.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/User/StudioProjects/Money-Saver/app/src/main/res/menu/menu_drawer.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

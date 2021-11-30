@@ -39,4 +39,12 @@
     <string name="lastName">Last Name</string>
     <string name="phoneNumber">Phone Number</string>
     <string name="done">Done</string>
+    <string name="recommendTitle">Recommended Financial Plan</string>
+    <string name="necessitiesTxt">Necessities</string>
+    <string name="playTxt">Play</string>
+    <string name="investmentTxt">Investments</string>
+    <string name="educationTxt">Education</string>
+    <string name="savingTxt">Long-term saving</string>
+    <string name="actualPlanTxt">Your Current Expenses</string>
+    <string name="giveTxt">Give (gift)</string>
 </resources>

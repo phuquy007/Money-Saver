@@ -119,7 +119,6 @@ public class ReportFragment extends Fragment {
         float transport = 0;
         float housing = 0;
         float others = 0;
-        float expenses = Float.parseFloat(TransactionFragment.getOutFlow(transactions));
 
         if (transactions != null && !transactions.isEmpty()){
             for(int i = 0; i < transactions.size(); i++){
