@@ -1,8 +1,11 @@
 package com.phuquytran_300303518.moneysaver.Activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.phuquytran_300303518.moneysaver.Entities.NotifyReceiver;
 import com.phuquytran_300303518.moneysaver.Entities.Transaction;
 import com.phuquytran_300303518.moneysaver.Fragments.AchievementFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.PlanFragment;
@@ -35,6 +39,7 @@ import com.phuquytran_300303518.moneysaver.Fragments.ReportFragment;
 import com.phuquytran_300303518.moneysaver.Fragments.TransactionFragment;
 import com.phuquytran_300303518.moneysaver.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     TextView txtUsername;
     TextView txtDisplayName;
     ImageView imgAvatar;
+
+    String isReminder, reminderTime;
 
     private static final String TAG = "Main Activity";
 
@@ -106,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.transaction);
 //                View view = bottomNavigationView.findViewById(R.id.transaction);//                view.performClick();
+
+        checkReminder();
     }
 
     private void setUpNavigation() {
@@ -141,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     goToProfileActivity();
                     break;
                 case R.id.navItem_settings:
-
+                    goToSettingsActivity();
                     break;
                 case R.id.navItem_logOut:
                     logOut();
@@ -161,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
     public void goToMainActivity(){
         finish();
         startActivity(getIntent());
+    }
+
+    public void goToSettingsActivity(){
+        Intent settingsActivity = new Intent(this, SettingsActivity.class);
+        startActivity(settingsActivity);
     }
 
     public void goToProfileActivity(){
@@ -190,6 +204,58 @@ public class MainActivity extends AppCompatActivity {
                         .load(storageReference.child(avatarLink))
                         .placeholder(R.drawable.placeholder_square)
                         .into(imgAvatar);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void createNotification (int hour, int minute) {
+        Log.d(TAG, "createNotification: " + hour);
+        Log.d(TAG, "createNotification: " + minute);
+        Intent myIntent = new Intent(MainActivity.this , NotifyReceiver.class ) ;
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService( ALARM_SERVICE ) ;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast
+                (MainActivity.this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar. getInstance ();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP , calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
+        Log.d(TAG, "Done Notification: " );
+    }
+
+    public void checkReminder(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null){
+            return;
+        }
+
+        FirebaseDatabase.getInstance().getReference().child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    isReminder = snapshot.child("isReminder").getValue(String.class);
+                    reminderTime = snapshot.child("reminderTime").getValue(String.class);
+
+                    String[] temp = reminderTime.split(":");
+                    int hour = Integer.valueOf(temp[0]);
+                    int minute = Integer.valueOf(temp[1]);
+
+                    if(isReminder.compareTo("Yes") == 0){
+                        createNotification(hour, minute);
+                    }else {
+
+                    }
+                }catch (Exception e){
+
+                }
             }
 
             @Override
