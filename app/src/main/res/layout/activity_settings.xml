@@ -58,7 +58,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto"
                 android:text="Reminder"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,8 +96,8 @@
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto"
-                android:text="Limit"
-                android:textSize="24sp"
+                android:text="Limit Expense Notification"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

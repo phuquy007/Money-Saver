@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                             .child("isLimit").setValue("Yes");
                     mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("limitAmount").setValue(newStringValue);
-                    txtLimit.setText(newStringValue);
+                    txtLimit.setText(newStringValue+"$");
                 }
             });
             AlertDialog dialog = alert.create();
@@ -174,7 +174,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if(isLimit.compareTo("Yes") == 0){
                         swtLimit.setChecked(true);
                         txtLimit.setVisibility(View.VISIBLE);
-                        txtLimit.setText(limitAmount);
+                        txtLimit.setText(limitAmount+"$");
                     }else {
                         swtLimit.setChecked(false);
                         txtLimit.setVisibility(View.INVISIBLE);
