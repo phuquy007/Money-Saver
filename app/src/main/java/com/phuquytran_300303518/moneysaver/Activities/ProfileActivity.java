@@ -104,9 +104,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void edit_Click(String param){
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.new_limit_dialog, null);
+        View alertLayout = inflater.inflate(R.layout.custom_dialog, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("New Limit");
+        alert.setTitle("New Value");
         // this is set the view from XML inside AlertDialog
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
